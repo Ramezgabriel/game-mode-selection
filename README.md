@@ -62,6 +62,8 @@ I believe AWS Elasticache would fit the bit. IT has the following features
 - It can be placed in a VPC coexisting the Business Handeler of the API component to ensure the access
 - Security can be configured using the security groups
 
+Note:
+- There are other details related to the store for example the details per player, i.e their region. This could be in a hashset item in redis per player with the key sharded by player id
 
 ## Conrete Architecture
 ![Concrete](https://user-images.githubusercontent.com/10727531/224496978-ae6ccc1c-8291-403d-b3b1-a5cd29862b9e.jpg)
