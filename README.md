@@ -66,3 +66,18 @@ I believe AWS Elasticache would fit the bit. IT has the following features
 ## Conrete Architecture
 ![Concrete](https://user-images.githubusercontent.com/10727531/224496978-ae6ccc1c-8291-403d-b3b1-a5cd29862b9e.jpg)
 
+# Scale
+Using microservices architectures enables us to scale difference small parts independently and automatically basically allowing us to be cost and performance efficient. 
+In this scenario we Auto Scale 
+- The API gateway (Using AWS API gateway, the scaling is managed by AWS)
+- The API component Load balancer (using AWS ALB, the scaling is managed by AWS)
+- The API component business handler (using EKS, the cluster can scale based on custom or managed metrics from AWS https://docs.aws.amazon.com/eks/latest/userguide/autoscaling.html, also Pods for the service could autoscale as well)
+
+# Quality
+We would need the following qualities to be realzied as first class citizen to manage the service efficiently
+- Observability (sending custom metrics when needed, and charting in dashboards custom and standard metrics)
+- Dashboards (maybe grafana)
+- Reliability (SRE. We need multiple SLIs and setting up SLOs for some/all of them)
+- Paging (alerting in case of failures in reliability or other)
+- Security (Network level, API level, ... etc)
+
