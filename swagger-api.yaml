@@ -47,10 +47,10 @@ paths:
                 $ref: '#/components/schemas/GameMode'          
         '400':
           description: Invalid Parameters supplied
-        '404':
-          description: Mode not found
-        '405':
-          description: Validation exception
+        '403':
+          description: No permissions
+        '429': 
+          description: Too many requests, slow down
       security:
         - mode_auth:
             - write:mode
@@ -58,7 +58,7 @@ paths:
     get:  
       tags:
         - game mode
-      summary: Post the mode for the player
+      summary: Get the most popular game modes for a player based on their region
       description: Authorization header is validated to make sure the player is authenticated, then gets Most popular game modes for the player region (uses the stored player region to )
       operationId: getPopularMode
       parameters:
@@ -74,13 +74,25 @@ paths:
           required: true
           schema:
             type: string
+        - name: nextToken
+          in: query
+          description: For pagination
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PopularModes'    
+                $ref: '#/components/schemas/PopularModes'
+        '400':
+          description: Invalid Parameters supplied
+        '403':
+          description: No permissions
+        '429': 
+          description: Too many requests, slow down
       security:
         - mode_auth:
             - read:mode
@@ -94,7 +106,7 @@ components:
       enum: [arena, 2v2, 4v4, freeForAll]
       format: enum
       example: arena
-      description: Game mode
+      description: Game mode this is a hardcoded non configurable propety in v1, maybe in v2 this becomes a dynamic config
     Region:
       type: string
       format: ISO-3166
@@ -123,6 +135,9 @@ components:
           description: Popular modes for player region ordered by popularity
           items:
             $ref: '#/components/schemas/PopularMode'
+        nextToken:
+          type: string
+          description: for pagination
     GameMode:
       required:
         - region
