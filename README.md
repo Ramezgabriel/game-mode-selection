@@ -73,6 +73,8 @@ In this scenario we Auto Scale
 - The API component Load balancer (using AWS ALB, the scaling is managed by AWS)
 - The API component business handler (using EKS, the cluster can scale based on custom or managed metrics from AWS https://docs.aws.amazon.com/eks/latest/userguide/autoscaling.html, also Pods for the service could autoscale as well)
 
+This way the service can potentially scale to handle millions of concurent users.
+
 # Quality
 We would need the following qualities to be realzied as first class citizen to manage the service efficiently
 - Observability (sending custom metrics when needed, and charting in dashboards custom and standard metrics)
