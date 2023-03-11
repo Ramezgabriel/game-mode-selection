@@ -64,4 +64,5 @@ I believe AWS Elasticache would fit the bit. IT has the following features
 
 
 ## Conrete Architecture
-![Concrete](https://user-images.githubusercontent.com/10727531/224496636-8d5b8b9c-3565-42a3-bfdb-b7eb58109d9d.jpg)
+![Concrete](https://user-images.githubusercontent.com/10727531/224496978-ae6ccc1c-8291-403d-b3b1-a5cd29862b9e.jpg)
+
