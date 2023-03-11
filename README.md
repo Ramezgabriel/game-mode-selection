@@ -1,4 +1,10 @@
-# game-mode-selection
+# Table of Contents
+1. [API of service](#API)
+2. [High Level components](#Highlevelcomponents)
+3. [Third Example](#third-example)
+4. [Fourth Example](#fourth-examplehttpwwwfourthexamplecom)
+
+
 ## API
 ### swagger-api.yaml
 This file has the yaml swagger for the proposed draft API
