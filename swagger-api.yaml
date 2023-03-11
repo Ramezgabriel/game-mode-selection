@@ -1,0 +1,146 @@
+openapi: 3.0.3
+info:
+  title: Game Mode selection
+  description: |-
+    Massively popular online game for mobile phones with a number of multiplayer modes. You're in charge of designing a service that will help players choose which game mode to play.
+  version: 0.0.1
+
+tags:
+  - name: game mode
+    description: Everything about game modes
+paths:
+  /v1/player/{playerId}/gameModes:
+    post:
+      tags:
+        - game mode
+      summary: Post the mode for the player
+      description: Authorization header is validated to make sure the player is authenticated, then player data would be saved
+      operationId: postMode
+      parameters:
+        - name: Authorization
+          in: header
+          description: ID of player
+          required: true
+          schema:
+            type: string
+        - name: playerId
+          in: path
+          description: ID of player
+          required: true
+          schema:
+            type: string
+            format: UUID
+       
+      requestBody:
+        description: Report game mode and region
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameMode'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameMode'          
+        '400':
+          description: Invalid Parameters supplied
+        '404':
+          description: Mode not found
+        '405':
+          description: Validation exception
+      security:
+        - mode_auth:
+            - write:mode
+  /v1/gameModes:
+    get:  
+      tags:
+        - game mode
+      summary: Post the mode for the player
+      description: Authorization header is validated to make sure the player is authenticated, then gets Most popular game modes for the player region (uses the stored player region to )
+      operationId: getPopularMode
+      parameters:
+        - name: Authorization
+          in: header
+          description: ID of player
+          required: true
+          schema:
+            type: string
+        - name: playerId
+          in: query
+          description: ID of player
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PopularModes'    
+      security:
+        - mode_auth:
+            - read:mode
+
+
+  
+components:
+  schemas:
+    Mode:
+      type: string
+      enum: [arena, 2v2, 4v4, freeForAll]
+      format: enum
+      example: arena
+      description: Game mode
+    Region:
+      type: string
+      format: ISO-3166
+      example: CA
+      description: Country code of the player, in the format of ISO-3166
+    PopularMode:
+      required:
+        - mode
+        - score
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/Mode'
+        score:
+          type: integer
+          format: int32
+          example: 12
+          description: Popularity score
+    PopularModes:
+      required:
+        - modes
+      type: object
+      properties:
+        modes:
+          type: array
+          description: Popular modes for player region ordered by popularity
+          items:
+            $ref: '#/components/schemas/PopularMode'
+    GameMode:
+      required:
+        - region
+        - mode
+      type: object
+      properties:
+        region:
+          $ref: '#/components/schemas/Region'
+        mode:
+          $ref: "#/components/schemas/Mode"
+
+      
+  securitySchemes:
+    mode_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://<DNS>/oauth/authorize
+          scopes:
+            write:mode: Write game mode per region
+            read:mode: read game modes
